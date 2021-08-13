@@ -60,6 +60,7 @@ public class Main {
             log(debugLog.toPath(),sw.toString());
         }
     }
+    @TestMethod
     public static void playMusic(File musicFile) {
         try {
             AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(musicFile);
@@ -78,32 +79,39 @@ public class Main {
     // TODO: 01.07.2021 *.java files of other packages
     @Marker(id = "file iteration")
     public static void iterateFiles(){//should return file i guess?
-        for (File storypack : storypacks) {//iteracja po storypackach
-            File[] dirCheck = storypack.listFiles();//wszystkie foldery grupujące
-            for (File value : dirCheck) {//iteracja po folderach grupujących
-                File[] files = value.listFiles();
-                if (value.toString().equals(storypack.toString() + "\\locations")) {//lokacje
-                    for (File file : files) {//iteracja po lokacjach
-                        try {
-                            locations.add((Location) DataClass.jsonToObject(file));
-                        } catch (BadDataException e) {
-                            e.printStackTrace(pw);
-                            log(debugLog.toPath(),sw.toString());
-                        }
+        if (storypacks != null) {
+            for (File storypack : storypacks) {//iteracja po storypackach
+                File[] dirCheck = storypack.listFiles();//wszystkie foldery grupujące
+                if (dirCheck != null) {
+                    for (File value : dirCheck) {//iteracja po folderach grupujących
+                        File[] files = value.listFiles();
+                        if (files != null) {
+                            if (value.toString().equals(storypack.toString() + "\\locations")) {//lokacje
+                                for (File file : files) {//iteracja po lokacjach
+                                    try {
+                                        locations.add((Location) DataClass.jsonToObject(file));
+                                    } catch (BadDataException e) {
+                                        e.printStackTrace(pw);
+                                        log(debugLog.toPath(),sw.toString());
+                                    }
+                                }
+                            }
+                            if (value.toString().equals(storypack.toString()+"\\keywords")){
+                                for (File file:files) {
+                                    try {
+                                        keywords.add((Keyword) DataClass.jsonToObject(file));
+                                    } catch (BadDataException e) {
+                                        e.printStackTrace(pw);
+                                        log(debugLog.toPath(),sw.toString());
+                                    }
+                                }
+                            }
+                        }else println("Explain to me: WHY is there  folder, is there's nothing inside it?");
                     }
-                }
-                if (value.toString().equals(storypack.toString()+"\\keywords")){
-                    for (File file:files) {
-                        try {
-                            keywords.add((Keyword) DataClass.jsonToObject(file));
-                        } catch (BadDataException e) {
-                            e.printStackTrace(pw);
-                            log(debugLog.toPath(),sw.toString());
-                        }
-                    }
-                }
+                }else println(storypack.getName()+"is empty. Unless I'm missing something...");
             }
-        }
+        }else println("No storypacks avaliable. Too bad!");
+
         println(locations.toString());
         println(keywords.toString());
     }
