@@ -140,7 +140,11 @@ public class Main {
         }
         iterateFiles();
         System.out.println(storyDir.toPath());
-        Location deepForest=locations.get(0);
+        if (locations.size() == 0) {
+            println("No locations avaliable. Sorry!");
+        }else {
+            Location deepForest=locations.get(0);
+        }
         println("storypacks = " + Arrays.toString(storypacks));//przeiteruj po tym i znajdź wszystkie foldery i pliki
         println("\n");
         Methods.help();
