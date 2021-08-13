@@ -1,7 +1,7 @@
 package com.safenar.data;
 
 import com.safenar.Race;
-import org.jetbrains.annotations.Nullable;
+
 
 import java.util.Arrays;
 import java.util.Objects;
@@ -20,13 +20,11 @@ public class Entity implements IEntity{
     private int luck;
     private boolean hasDodged;
     private boolean critical;
-    @Nullable
     public Item mainHand;
-    @Nullable
     Item[] inventory;
     public static Entity BASIC_ENTITY=new Entity("Basic test entity", Race.NO_RACE,100,10,10,10,10,Item.NO_ITEM,new Item[10]);
 
-    public Entity(String name, Race race, long hp, int attack, int defense, int speed, int luck, @Nullable Item mainHand, @Nullable Item[] inventory) {
+    public Entity(String name, Race race, long hp, int attack, int defense, int speed, int luck, Item mainHand, Item[] inventory) {
         this.name = name;
         this.race = race;
         this.hp = hp;
