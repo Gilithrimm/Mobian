@@ -86,7 +86,7 @@ public class Main {
                     for (File value : dirCheck) {//iteracja po folderach grupujących
                         File[] files = value.listFiles();
                         if (files != null) {
-                            if (value.toString().equals(storypack.toString() + "\\locations")) {//lokacje
+                            if (value.toString().equals(storypack + "\\locations")) {//lokacje
                                 for (File file : files) {//iteracja po lokacjach
                                     try {
                                         locations.add((Location) DataClass.jsonToObject(file));
@@ -96,7 +96,7 @@ public class Main {
                                     }
                                 }
                             }
-                            if (value.toString().equals(storypack.toString()+"\\keywords")){
+                            if (value.toString().equals(storypack +"\\keywords")){
                                 for (File file:files) {
                                     try {
                                         keywords.add((Keyword) DataClass.jsonToObject(file));
@@ -115,11 +115,7 @@ public class Main {
         println(locations.toString());
         println(keywords.toString());
     }
-//    public static JavaFile javaFiles(){
-//
-//        return null;
-////        return new JavaFile();
-//    }
+
     public static void generate(int seed){
 
     }
