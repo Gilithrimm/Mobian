@@ -7,18 +7,18 @@ public class Keyword{
     private String name;
     private String description;
     private List<Argument> args;
-    private String methodName;
+    private JavaFile methodName;
     private Keyword alt;
 
     public Keyword() {}
 
-    public Keyword(String name, String description, String methodName) {
+    public Keyword(String name, String description, JavaFile methodName) {
         this.name = name;
         this.description = description;
         this.methodName = methodName;
     }
 
-    public Keyword(String name, String description, String methodName, Argument... args) {
+    public Keyword(String name, String description, JavaFile methodName, Argument... args) {
         this.name = name;
         this.description = description;
         this.args = Arrays.asList(args);
@@ -49,11 +49,11 @@ public class Keyword{
         this.args = Arrays.asList(args);
     }
 
-    public String getMethodName() {
+    public JavaFile getMethodName() {
         return methodName;
     }
 
-    public void setMethodName(String methodName) {
+    public void setMethodName(JavaFile methodName) {
         this.methodName = methodName;
     }
 
