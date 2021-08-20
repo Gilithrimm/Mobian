@@ -76,7 +76,7 @@ public class DataClass {
                             ((Keyword)object).setDescription(map.get(key));
                             break;
                         case "methodname":
-                            ((Keyword) object).setMethodName(map.get(key));
+                            ((Keyword) object).setMethodName(new JavaFile(map.get(key)));
                             break;
                         case "args":
                             List<String> args=Arrays.asList(map.get(key));
