@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -131,14 +132,20 @@ public class Main {
 
     @Marker(id="check")
     public static void check(){
-        String command=commands.next();
+        String[] keyword=commands.next().split(" ");
+        String command=keyword[0];
+        List<String> args=Arrays.asList(keyword);
+        args.remove(0);
         for (Keyword key : keywords) {
-            try {
-                Method[] methods = Class.forName(key.getMethodName().getClassName()).getMethods();
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace(pw);
-                log(sw.toString());
-            }// TODO: 20.08.2021 end it.
+            if (command.equals(key.getName())){
+                try {
+                    Method method = Class.forName(key.getMethodName().getClassName()).getMethod(key.getMethodName().getMethodName());
+                    method.invoke(Class.forName(key.getMethodName().getClassName()), args.toArray());
+                } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+                    e.printStackTrace(pw);
+                    log(sw.toString());
+                }// TODO: 20.08.2021 end it.
+            }
         }
     }
 
