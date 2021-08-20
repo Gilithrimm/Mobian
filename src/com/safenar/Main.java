@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.lang.reflect.Method;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
@@ -49,6 +50,11 @@ public class Main {
         int raceRand=rand.nextInt(5);//NPEx bc y not?
         return race.get(raceRand);
     }
+
+    @TestMethod
+    public static void log(Object logs) {
+        log(debugLog.toPath(), logs);
+    }
     @TestMethod
     public static void log(Path logFile, Object logs){
         try {
@@ -57,7 +63,7 @@ public class Main {
             Files.write(logFile, bytes, StandardOpenOption.APPEND);
         } catch (IOException e) {
             e.printStackTrace(pw);
-            log(debugLog.toPath(),sw.toString());
+            log(sw.toString());
         }
     }
     @TestMethod
@@ -69,7 +75,7 @@ public class Main {
             clip.start();
         } catch(Exception ex) {
             ex.printStackTrace(pw);
-            log(debugLog.toPath(),sw.toString());
+            log(sw.toString());
         }
     }
 
@@ -92,7 +98,7 @@ public class Main {
                                         locations.add((Location) DataClass.jsonToObject(file));
                                     } catch (BadDataException e) {
                                         e.printStackTrace(pw);
-                                        log(debugLog.toPath(),sw.toString());
+                                        log(sw.toString());
                                     }
                                 }
                             }
@@ -102,7 +108,7 @@ public class Main {
                                         keywords.add((Keyword) DataClass.jsonToObject(file));
                                     } catch (BadDataException e) {
                                         e.printStackTrace(pw);
-                                        log(debugLog.toPath(),sw.toString());
+                                        log(sw.toString());
                                     }
                                 }
                             }
@@ -122,7 +128,19 @@ public class Main {
     public static void generate(Object seed){
         generate(seed.hashCode());
     }
-    
+
+    @Marker(id="check")
+    public static void check(){
+        String command=commands.next();
+        for (Keyword key : keywords) {
+            try {
+                Method[] methods = Class.forName(key.getMethodName().getClassName()).getMethods();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace(pw);
+                log(sw.toString());
+            }// TODO: 20.08.2021 end it.
+        }
+    }
 
     @Marker(id="main")
     public static void main(String... args) {
@@ -131,7 +149,7 @@ public class Main {
                 Files.createDirectory(storyDir.toPath());
             } catch (IOException ioException) {
                 ioException.printStackTrace(pw);
-                log(debugLog.toPath(),sw.toString());
+                log(sw.toString());
             }
         }
         iterateFiles();
@@ -143,6 +161,6 @@ public class Main {
         }
         println("storypacks = " + Arrays.toString(storypacks));//przeiteruj po tym i znajdź wszystkie foldery i pliki
         println("\n");
-        Methods.help();
+
     }
 }
