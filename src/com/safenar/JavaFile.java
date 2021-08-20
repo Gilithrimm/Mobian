@@ -1,20 +1,24 @@
 package com.safenar;
 
 public class JavaFile {
-    private String packageName;
+    private String methodName;
     private String className;
 
-    public JavaFile(String packageName, String className) {
-        this.packageName = packageName;
+    public JavaFile(String methodName, String className) {
+        this.methodName = methodName;
         this.className = className;
     }
 
-    public String getPackageName() {
-        return packageName;
+    public JavaFile(String methodName) {
+        methodName.split("\\.");// TODO: 20.08.2021 end it.
     }
 
-    public void setPackageName(String packageName) {
-        this.packageName = packageName;
+    public String getMethodName() {
+        return methodName;
+    }
+
+    public void setMethodName(String methodName) {
+        this.methodName = methodName;
     }
 
     public String getClassName() {
@@ -23,5 +27,10 @@ public class JavaFile {
 
     public void setClassName(String className) {
         this.className = className;
+    }
+
+    @Override
+    public String toString() {
+        return getClassName()+"."+getMethodName();
     }
 }
