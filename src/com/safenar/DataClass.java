@@ -65,7 +65,7 @@ public class DataClass {
                     }
                 }
             }
-            if (from.toString().contains(storypack.toString()+"\\keywords")){
+            if (from.toString().contains(storypack +"\\keywords")){
                 object=new Keyword();
                 keyword:for (String key:map.keySet()) {
                     switch (key.toLowerCase()){
@@ -78,10 +78,7 @@ public class DataClass {
                         case "methodname":
                             ((Keyword) object).setMethodName(new JavaFile(map.get(key)));
                             break;
-                        case "args":
-                            List<String> args=Arrays.asList(map.get(key));
-//                            Main.println(args);
-//                            ((Keyword) object).setArgs((Argument[]) args.toArray());
+
 
                     }
                 }
@@ -126,21 +123,6 @@ public class DataClass {
             }
             if (((Location) cast).getId() == null) {
                 throw new BadDataException("There is no id!");
-            }
-        }
-        if (cast instanceof Argument){
-            for (String key : map.keySet()) {
-                switch (key){
-                    case "type":
-
-                        break;
-                    case "defaults":
-//                        ((Argument) cast).setDefaults(Collections.singletonList(map.get(key)));
-                        break;
-                    case "isRequired":
-                        ((Argument) cast).setRequired(Boolean.parseBoolean(map.get(key)));
-                        break;
-                }
             }
         }
         else throw new ClassCastException("No class like that is allowed/checked here");//it's 11pm and i don't wanna go sleep yet, rip any thinking rn
