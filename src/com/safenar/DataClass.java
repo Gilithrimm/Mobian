@@ -68,18 +68,10 @@ public class DataClass {
             if (from.toString().contains(storypack +"\\keywords")){
                 object=new Keyword();
                 keyword:for (String key:map.keySet()) {
-                    switch (key.toLowerCase()){
-                        case "name":
-                            ((Keyword) object).setName(map.get(key));
-                            break;
-                        case "desc":
-                            ((Keyword)object).setDescription(map.get(key));
-                            break;
-                        case "methodname":
-                            ((Keyword) object).setMethodName(new JavaFile(map.get(key)));
-                            break;
-
-
+                    switch (key.toLowerCase()) {
+                        case "name" -> ((Keyword) object).setName(map.get(key));
+                        case "desc" -> ((Keyword) object).setDescription(map.get(key));
+                        case "methodname" -> ((Keyword) object).setMethodName(new JavaFile(map.get(key)));
                     }
                 }
             }
