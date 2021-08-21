@@ -9,8 +9,18 @@ public class JavaFile {
         this.className = className;
     }
 
-    public JavaFile(String methodName) {
-        methodName.split("\\.");// TODO: 20.08.2021 end it.
+    public JavaFile(String fullName) {
+        String[] split = fullName.split("\\.");
+        setMethodName(split[split.length-1].replace("()",""));
+        String binName="";
+        StringBuilder sb=new StringBuilder(binName);
+        for (String binClass:split) {
+            if (binClass.equals(getMethodName())) break;
+            sb.append(binClass);
+            sb.append(".");
+        }
+        binName=sb.toString();
+        if (binName.endsWith(".")) setClassName(binName.substring(0,binName.length()-1));
     }
 
     public String getMethodName() {
