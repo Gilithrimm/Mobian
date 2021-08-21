@@ -6,7 +6,7 @@ import java.util.List;
 public class Keyword{
     private String name;
     private String description;
-    private List<Argument> args;
+
     private JavaFile methodName;
     private Keyword alt;
 
@@ -15,13 +15,6 @@ public class Keyword{
     public Keyword(String name, String description, JavaFile methodName) {
         this.name = name;
         this.description = description;
-        this.methodName = methodName;
-    }
-
-    public Keyword(String name, String description, JavaFile methodName, Argument... args) {
-        this.name = name;
-        this.description = description;
-        this.args = Arrays.asList(args);
         this.methodName = methodName;
     }
 
@@ -39,14 +32,6 @@ public class Keyword{
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public List<Argument> getArgs() {
-        return args;
-    }
-
-    public void setArgs(Argument... args) {
-        this.args = Arrays.asList(args);
     }
 
     public JavaFile getMethodName() {
@@ -70,7 +55,6 @@ public class Keyword{
         return "Keyword{" +
                 "name='" + name + '\'' +
                 ", description='" + description + '\'' +
-                ", args=" + args +
                 ", methodName='" + methodName + '\'' +
                 ", alt=" + alt +
                 '}';
