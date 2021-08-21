@@ -121,24 +121,5 @@ public class DataClass {
         // TODO: 17.07.2021 FIX THIS SHIT!
         return cast;
     }
-    /*public static List<HashMap<String,String>> jsonArrayToList(String array){
-        ArrayList<String> strings= (ArrayList<String>) Arrays.asList(array.split(","));
-        String remove = strings.get(0).replace("[","");
-        if (!remove.equals("["))strings.add(0,remove);
-        remove=strings.remove(strings.size()-1);
-        if (!remove.equals("]"))strings.add(remove);
-        for (String string : strings) {//rozdzielanie linii
-            String replace = string.replaceAll("\"", "");
-            replace=replace.replace("{","");
-            replace=replace.replace("}","");
-            String[] lines = replace.split(":");//rozdzielanie na pary klucz-wartość
-            for (int j = 0; j < lines.length; j = j + 2) {//dodawanie par do mapy
-                String key = lines[j].trim();
-                String value = lines[j + 1].replace(",","");
-                map.put(key, value);
-            }
-        }
-        return strings;
-    }*/
 
 }
