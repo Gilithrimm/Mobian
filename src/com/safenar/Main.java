@@ -81,7 +81,6 @@ public class Main {
     }
 
     // TODO: 20.05.2021 Threads here
-    // TODO: 28.05.2021 checking keywords in /switch(input) case keywords[i].name->{anything}/
     // TODO: 01.07.2021 unmarshalling data from storypacks
     // TODO: 01.07.2021 *.java files of other packages
     @Marker(id = "file iteration")
@@ -134,13 +133,13 @@ public class Main {
     public static void check(){
         String[] keyword=commands.next().split(" ");
         String command=keyword[0];
-        List<String> args=Arrays.asList(keyword);
+        List<String> args=new ArrayList<>(Arrays.asList(keyword));
         args.remove(0);
         for (Keyword key : keywords) {
-            if (command.equals(key.getName())){
+            if (command.equalsIgnoreCase(key.getName())){
                 try {
                     Method method = Class.forName(key.getMethodName().getClassName()).getMethod(key.getMethodName().getMethodName());
-                    method.invoke(Class.forName(key.getMethodName().getClassName()), args.toArray());
+                    println(method.invoke(Class.forName(key.getMethodName().getClassName()), args.toArray()).toString());
                 } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
                     e.printStackTrace(pw);
                     log(sw.toString());
@@ -166,8 +165,8 @@ public class Main {
         }else {
             Location deepForest=locations.get(0);
         }
+        check();
         println("storypacks = " + Arrays.toString(storypacks));//przeiteruj po tym i znajdź wszystkie foldery i pliki
         println("\n");
-
     }
 }
