@@ -1,8 +1,10 @@
 package com.safenar;
 
-import com.safenar.data.*;
 import com.safenar.java.Marker;
 
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -14,8 +16,6 @@ import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.time.LocalDateTime;
 import java.util.*;
-
-import javax.sound.sampled.*;
 
 @SuppressWarnings("CanBeFinal")
 public class Main {
@@ -31,29 +31,14 @@ public class Main {
     public static File debugLog=new File("logs\\debug.log");
     static File storyDir=new File(System.getProperty("user.home")+"\\storypacks\\");
     public static File[] storypacks=storyDir.listFiles();
-    static Player player;
-    static Enemy testEnemy;
     static Random rand=new Random();
     static Scanner commands =new Scanner(System.in);
     static List<Keyword> keywords=new ArrayList<>();
     static String input;
     static List<File> music=new ArrayList<>(10);
-    static ArrayList<Location> locations=new ArrayList<>();
-
-    static {
-        player=new Player("Gili",randRace(),100,10,10,10,10,Item.NO_ITEM, Item.BASE_INVENTORY);
-        testEnemy=new Enemy("test enemy",randRace(),10,5,5,3,3,Item.NO_ITEM, new Item[]{Item.NO_ITEM, Item.NO_ITEM});
-    }
 
     @TestMethod
-    static Race randRace(){
-        List<Race> race= Arrays.asList(Race.values());
-        int raceRand=rand.nextInt(5);//NPEx bc y not?
-        return race.get(raceRand);
-    }
-
-    @TestMethod
-    public static void log(Object logs) {
+    public static void logToDebug(Object logs) {
         log(debugLog.toPath(), logs);
     }
     @TestMethod
@@ -64,7 +49,7 @@ public class Main {
             Files.write(logFile, bytes, StandardOpenOption.APPEND);
         } catch (IOException e) {
             e.printStackTrace(pw);
-            log(sw.toString());
+            logToDebug(sw.toString());
         }
     }
     @TestMethod
@@ -76,7 +61,7 @@ public class Main {
             clip.start();
         } catch(Exception ex) {
             ex.printStackTrace(pw);
-            log(sw.toString());
+            logToDebug(sw.toString());
         }
     }
 
@@ -92,23 +77,13 @@ public class Main {
                     for (File value : dirCheck) {//iteracja po folderach grupujących
                         File[] files = value.listFiles();
                         if (files != null) {
-                            if (value.toString().equals(storypack + "\\locations")) {//lokacje
-                                for (File file : files) {//iteracja po lokacjach
-                                    try {
-                                        locations.add((Location) DataClass.jsonToObject(file));
-                                    } catch (BadDataException e) {
-                                        e.printStackTrace(pw);
-                                        log(sw.toString());
-                                    }
-                                }
-                            }
                             if (value.toString().equals(storypack +"\\keywords")){
                                 for (File file:files) {
                                     try {
                                         keywords.add((Keyword) DataClass.jsonToObject(file));
                                     } catch (BadDataException e) {
                                         e.printStackTrace(pw);
-                                        log(sw.toString());
+                                        logToDebug(sw.toString());
                                     }
                                 }
                             }
@@ -118,7 +93,6 @@ public class Main {
             }
         }else println("No storypacks avaliable. Too bad!");
 
-        println(locations.toString());
         println(keywords.toString());
     }
 
@@ -142,7 +116,7 @@ public class Main {
                     println(method.invoke(Class.forName(key.getMethodName().getClassName()), args.toArray()).toString());
                 } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
                     e.printStackTrace(pw);
-                    log(sw.toString());
+                    logToDebug(sw.toString());
                 }// TODO: 20.08.2021 end it.
             }
         }
@@ -155,16 +129,11 @@ public class Main {
                 Files.createDirectory(storyDir.toPath());
             } catch (IOException ioException) {
                 ioException.printStackTrace(pw);
-                log(sw.toString());
+                logToDebug(sw.toString());
             }
         }
         iterateFiles();
         System.out.println(storyDir.toPath());
-        if (locations.size() == 0) {
-            println("No locations avaliable. Sorry!");
-        }else {
-            Location deepForest=locations.get(0);
-        }
         check();
         println("storypacks = " + Arrays.toString(storypacks));//przeiteruj po tym i znajdź wszystkie foldery i pliki
         println("\n");

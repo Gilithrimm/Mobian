@@ -1,4 +1,4 @@
-package com.safenar.data;
+package com.safenar;
 
 public class BadStructureException extends Exception {
     public BadStructureException() {
