@@ -15,6 +15,7 @@ import java.util.*;
 
 @SuppressWarnings("CanBeFinal")
 public class Main {
+
     // TODO: 01.07.2021 Swing
     @TestMethod
     public static void println(Object word){
@@ -89,13 +90,6 @@ public class Main {
         }else println("No storypacks avaliable. Too bad!");
 
         println(keywords.toString());
-    }
-
-    public static void generate(int seed){
-
-    }
-    public static void generate(Object seed){
-        generate(seed.hashCode());
     }
 
     @Marker(id="check")
