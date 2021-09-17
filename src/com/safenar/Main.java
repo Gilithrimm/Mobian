@@ -5,12 +5,8 @@ import com.safenar.java.Marker;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
-import java.io.File;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
+import java.io.*;
+import java.lang.reflect.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
@@ -48,8 +44,7 @@ public class Main {
             if (!logFile.toFile().exists()) Files.createFile(logFile);
             Files.write(logFile, bytes, StandardOpenOption.APPEND);
         } catch (IOException e) {
-            e.printStackTrace(pw);
-            logToDebug(sw.toString());
+            e.printStackTrace();
         }
     }
     @TestMethod
@@ -87,7 +82,7 @@ public class Main {
                                     }
                                 }
                             }
-                        }else println("Explain to me: WHY is there  folder, is there's nothing inside it?");
+                        }else println("Explain to me: WHY is there a folder, if there's nothing inside it?");
                     }
                 }else println(storypack.getName()+"is empty. Unless I'm missing something...");
             }
