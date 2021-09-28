@@ -1,7 +1,4 @@
-package com.safenar;
-
-import java.util.Arrays;
-import java.util.List;
+package com.safenar.lang;
 
 public class Keyword{
     private String name;

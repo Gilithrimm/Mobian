@@ -1,4 +1,4 @@
-package com.safenar;
+package com.safenar.lang;
 
 public class JavaFile {
     private String methodName;
