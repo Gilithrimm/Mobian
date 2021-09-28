@@ -6,9 +6,7 @@ import java.util.List;
 public class Keyword{
     private String name;
     private String description;
-
     private JavaFile methodName;
-    private Keyword alt;
 
     public Keyword() {}
 
@@ -42,21 +40,12 @@ public class Keyword{
         this.methodName = methodName;
     }
 
-    public Keyword getAlt() {
-        return alt;
-    }
-
-    public void setAlt(Keyword alt) {
-        this.alt = alt;
-    }
-
     @Override
     public String toString() {
         return "Keyword{" +
                 "name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", methodName='" + methodName + '\'' +
-                ", alt=" + alt +
                 '}';
     }
 }
