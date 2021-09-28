@@ -1,6 +1,7 @@
 package com.safenar;
 
 import com.safenar.java.Marker;
+import com.safenar.lang.Keyword;
 
 import java.io.File;
 import java.io.IOException;
@@ -31,7 +32,7 @@ public class Main {
     public static File[] storypacks=storyDir.listFiles();
     static Random rand=new Random();
     static Scanner commands =new Scanner(System.in);
-    static List<Keyword> keywords=new ArrayList<>();
+    static public List<Keyword> keywords=new ArrayList<>();
     static String input;
 
     @TestMethod
