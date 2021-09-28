@@ -73,8 +73,9 @@ public class Main {
                     for (File value : dirCheck) {//iteracja po folderach grupujących
                         File[] files = value.listFiles();
                         if (files != null) {
-                            if (value.toString().equals(storypack +"\\keywords")){
-                                for (File file:files) {
+                            for (File file:files) {
+                                if (file.getName().startsWith("_")||!file.isFile()) continue;
+                                if (value.toString().equals(storypack +"\\keywords")){
                                     try {
                                         keywords.add((Keyword) DataClass.jsonToObject(file));
                                     } catch (BadDataException e) {
@@ -82,7 +83,9 @@ public class Main {
                                         logToDebug(sw.toString());
                                     }
                                 }
+
                             }
+
                         }else println("Explain to me: WHY is there a folder, if there's nothing inside it?");
                     }
                 }else println(storypack.getName()+"is empty. Unless I'm missing something...");
@@ -102,7 +105,7 @@ public class Main {
             if (command.equalsIgnoreCase(key.getName())){
                 try {
                     Method method = Class.forName(key.getMethodName().getClassName()).getMethod(key.getMethodName().getMethodName());
-                    println(method.invoke(Class.forName(key.getMethodName().getClassName()), args.toArray()).toString());
+                    method.invoke(Class.forName(key.getMethodName().getClassName()), args.toArray());
                 } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
                     e.printStackTrace(pw);
                     logToDebug(sw.toString());
