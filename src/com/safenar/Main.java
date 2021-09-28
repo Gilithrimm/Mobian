@@ -2,11 +2,12 @@ package com.safenar;
 
 import com.safenar.java.Marker;
 
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
-import java.io.*;
-import java.lang.reflect.*;
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
@@ -32,7 +33,6 @@ public class Main {
     static Scanner commands =new Scanner(System.in);
     static List<Keyword> keywords=new ArrayList<>();
     static String input;
-    static List<File> music=new ArrayList<>(10);
 
     @TestMethod
     public static void logToDebug(Object logs) {
@@ -48,24 +48,12 @@ public class Main {
             e.printStackTrace();
         }
     }
-    @TestMethod
-    public static void playMusic(File musicFile) {
-        try {
-            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(musicFile);
-            Clip clip = AudioSystem.getClip();
-            clip.open(audioInputStream);
-            clip.start();
-        } catch(Exception ex) {
-            ex.printStackTrace(pw);
-            logToDebug(sw.toString());
-        }
-    }
 
     // TODO: 20.05.2021 Threads here
     // TODO: 01.07.2021 unmarshalling data from storypacks
     // TODO: 01.07.2021 *.java files of other packages
     @Marker(id = "file iteration")
-    public static void iterateFiles(){//should return file i guess?
+    public static void iterateFiles(){//should return file I guess?
         if (storypacks != null) {
             for (File storypack : storypacks) {//iteracja po storypackach
                 File[] dirCheck = storypack.listFiles();//wszystkie foldery grupujące
