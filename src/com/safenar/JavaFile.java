@@ -4,18 +4,14 @@ public class JavaFile {
     private String methodName;
     private String className;
 
-    public JavaFile(String methodName, String className) {
-        this.methodName = methodName;
-        this.className = className;
-    }
-
     public JavaFile(String fullName) {
         String[] split = fullName.split("\\.");
         setMethodName(split[split.length-1].replace("()",""));
         String binName="";
         StringBuilder sb=new StringBuilder(binName);
         for (String binClass:split) {
-            if (binClass.equals(getMethodName())) break;
+            if (binClass.endsWith("()")&&binClass.replace("()","").equals(getMethodName())) break;
+            if (binClass.equalsIgnoreCase(getMethodName())) break;
             sb.append(binClass);
             sb.append(".");
         }
