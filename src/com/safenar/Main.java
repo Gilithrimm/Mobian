@@ -33,7 +33,6 @@ public class Main {
     static Random rand=new Random();
     static Scanner commands =new Scanner(System.in);
     static public List<Keyword> keywords=new ArrayList<>();
-    static String input;
 
     @TestMethod
     public static void logToDebug(Object logs) {
@@ -83,22 +82,30 @@ public class Main {
 
         println(keywords.toString());
     }
+    @Marker(id="input")
+    public static ArrayList<String> getInput(){
+        return (ArrayList<String>) Arrays.asList(commands.next().split(" "));
+    }
 
     @Marker(id="check")
-    public static void check(){
-        String[] keyword=commands.next().split(" ");
-        String command=keyword[0];
-        List<String> args=new ArrayList<>(Arrays.asList(keyword));
-        args.remove(0);
+    public static boolean check(Keyword key){
+        String command=getInput().remove(0);
+        return command.equalsIgnoreCase(key.getName());
+    }
+
+    public static void execute(){
         for (Keyword key : keywords) {
-            if (command.equalsIgnoreCase(key.getName())){
+            if (check(key)){
                 try {
-                    Method method = Class.forName(key.getMethodName().getClassName()).getMethod(key.getMethodName().getMethodName());
-                    method.invoke(Class.forName(key.getMethodName().getClassName()), args.toArray());
-                } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+                    Method method = Class.forName(key.getMethodName().getPackageName()+"."+key.getMethodName().getClassName()).getMethod(key.getMethodName().getMethodName());
+                    method.invoke(Class.forName(key.getMethodName().getClassName()), getInput().toArray());
+                } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
                     e.printStackTrace(pw);
                     logToDebug(sw.toString());
                 }// TODO: 20.08.2021 end it.
+                catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }
@@ -115,7 +122,7 @@ public class Main {
         }
         iterateFiles();
         System.out.println(storyDir.toPath());
-        check();
+        execute();
         println("storypacks = " + Arrays.toString(storypacks));//przeiteruj po tym i znajdź wszystkie foldery i pliki
         println("\n");
     }
