@@ -2,7 +2,9 @@ package com.safenar;
 
 import com.safenar.java.Marker;
 import com.safenar.lang.Keyword;
+import com.safenar.swing.MyFrame;
 
+import javax.swing.SwingUtilities;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -16,7 +18,9 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 @SuppressWarnings("CanBeFinal")
-public class Main {
+public class Main implements Initializer {
+
+    public static final String version="0.01-alpha";
 
     // TODO: 01.07.2021 Swing
     @TestMethod
@@ -33,6 +37,7 @@ public class Main {
     static Random rand=new Random();
     static Scanner commands =new Scanner(System.in);
     static public List<Keyword> keywords=new ArrayList<>();
+    public static final MyFrame[] frame = new MyFrame[1];
 
     @TestMethod
     public static void logToDebug(Object logs) {
@@ -47,6 +52,20 @@ public class Main {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @TestMethod
+    public static String arrayToString(Collection<String> collection) {
+        StringBuilder stringBuilder=new StringBuilder();
+        for (String text:collection) {
+            stringBuilder.append(text).append(" ");
+        }
+        return stringBuilder.toString();
+    }
+
+    @TestMethod
+    public static String arrayToString(String[] array){
+        return arrayToString(Arrays.stream(array).toList());
     }
 
     // TODO: 20.05.2021 Threads here
@@ -80,20 +99,41 @@ public class Main {
             }
         }else println("No storypacks avaliable. Too bad!");
 
-        println(keywords.toString());
     }
+
+
+
     @Marker(id="input")
     public static ArrayList<String> getInput(){
-        return (ArrayList<String>) Arrays.asList(commands.next().split(" "));
+        ArrayList<String> stringArrayList=new ArrayList<>();
+        Collections.addAll(stringArrayList,commands.next().split(" "));
+        return stringArrayList;
     }
 
     @Marker(id="check")
     public static boolean check(Keyword key){
+        println("Welcome to Mobian! Write help to get all the commands.");
         String command=getInput().remove(0);
+        logToDebug(arrayToString(getInput()));
         return command.equalsIgnoreCase(key.getName());
     }
 
-    public static void execute(){
+    @Override
+    public void load() {
+        if (!storyDir.exists()){
+            try {
+                Files.createDirectory(storyDir.toPath());
+            } catch (IOException ioException) {
+                ioException.printStackTrace(pw);
+                logToDebug(sw.toString());
+            }
+        }
+        SwingUtilities.invokeLater(() -> frame[0]=new MyFrame());
+        iterateFiles();
+    }
+
+    @Override
+    public void init() {
         for (Keyword key : keywords) {
             if (check(key)){
                 try {
@@ -112,18 +152,10 @@ public class Main {
 
     @Marker(id="main")
     public static void main(String... args) {
-        if (!storyDir.exists()){
-            try {
-                Files.createDirectory(storyDir.toPath());
-            } catch (IOException ioException) {
-                ioException.printStackTrace(pw);
-                logToDebug(sw.toString());
-            }
-        }
-        iterateFiles();
-        System.out.println(storyDir.toPath());
-        execute();
-        println("storypacks = " + Arrays.toString(storypacks));//przeiteruj po tym i znajdź wszystkie foldery i pliki
-        println("\n");
+        Main why=new Main();
+        why.load();
+        why.init();
     }
+
+
 }
