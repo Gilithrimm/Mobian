@@ -5,12 +5,8 @@ import com.safenar.lang.Keyword;
 import com.safenar.swing.MyFrame;
 
 import javax.swing.SwingUtilities;
-import java.io.File;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
+import java.io.*;
+import java.lang.reflect.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
@@ -37,7 +33,7 @@ public class Main implements Initializer {
     static Random rand=new Random();
     static Scanner commands =new Scanner(System.in);
     static public List<Keyword> keywords=new ArrayList<>();
-    public static final MyFrame[] frame = new MyFrame[1];
+    public static MyFrame frame;
 
     @TestMethod
     public static void logToDebug(Object logs) {
@@ -128,7 +124,7 @@ public class Main implements Initializer {
                 logToDebug(sw.toString());
             }
         }
-        SwingUtilities.invokeLater(() -> frame[0]=new MyFrame());
+        frame=new MyFrame();
         iterateFiles();
     }
 
@@ -138,7 +134,7 @@ public class Main implements Initializer {
             if (check(key)){
                 try {
                     Method method = Class.forName(key.getMethodName().getPackageName()+"."+key.getMethodName().getClassName()).getMethod(key.getMethodName().getMethodName());
-                    method.invoke(Class.forName(key.getMethodName().getClassName()), getInput().toArray());
+                    method.invoke(null, getInput().toArray());
                 } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
                     e.printStackTrace(pw);
                     logToDebug(sw.toString());
