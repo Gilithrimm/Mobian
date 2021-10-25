@@ -1,17 +1,13 @@
 package com.safenar.lang;
 
+import java.util.Map;
+
 public class Keyword{
     private String name;
     private String description;
     private JavaFile methodName;
 
     public Keyword() {}
-
-    public Keyword(String name, String description, JavaFile methodName) {
-        this.name = name;
-        this.description = description;
-        this.methodName = methodName;
-    }
 
     public String getName() {
         return name;
@@ -35,6 +31,14 @@ public class Keyword{
 
     public void setMethodName(JavaFile methodName) {
         this.methodName = methodName;
+    }
+
+    public void makeKeyword(Map<String ,String> map, String key) {
+        switch (key.toLowerCase()) {
+            case "name" -> setName(map.get(key));
+            case "desc" -> setDescription(map.get(key));
+            case "methodname" -> setMethodName(new JavaFile(map.get(key)));
+        }
     }
 
     @Override

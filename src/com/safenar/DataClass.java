@@ -1,6 +1,5 @@
 package com.safenar;
 
-import com.safenar.lang.JavaFile;
 import com.safenar.lang.Keyword;
 
 import java.io.File;
@@ -34,23 +33,17 @@ public class DataClass {
                     map.put(key, value);
                 }
             }else {
-
+                //what tf do u expect me to do with "}])" at the end of f..king line?!
             }
 
         }
-        for (File storypack:Main.storypacks) {
-            if (from.toString().contains(storypack +"\\keywords")){
-                object=new Keyword();
-                keyword:for (String key:map.keySet()) {
-                    switch (key.toLowerCase()) {
-                        case "name" -> ((Keyword) object).setName(map.get(key));
-                        case "desc" -> ((Keyword) object).setDescription(map.get(key));
-                        case "methodname" -> ((Keyword) object).setMethodName(new JavaFile(map.get(key)));
-                    }
-                }
+        if (from.toString().contains("\\keywords")){
+            object=new Keyword();
+            for (String key : map.keySet()) {
+                ((Keyword) object).makeKeyword(map,key);
             }
-            map.clear();
         }
-        return object;// TODO: 05.07.2021 END ME!!!!!!
+        map.clear();
+        return object;// TODO: 05.07.2021 end me, clear me
     }
 }
