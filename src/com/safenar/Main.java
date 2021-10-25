@@ -4,7 +4,6 @@ import com.safenar.java.Marker;
 import com.safenar.lang.Keyword;
 import com.safenar.swing.MyFrame;
 
-import javax.swing.SwingUtilities;
 import java.io.*;
 import java.lang.reflect.*;
 import java.nio.file.Files;
@@ -78,25 +77,25 @@ public class Main implements Initializer {
                         if (files != null) {
                             for (File file:files) {
                                 if (file.getName().startsWith("_")||!file.isFile()) continue;
-                                if (value.toString().equals(storypack +"\\keywords")){
-                                    try {
-                                        keywords.add((Keyword) DataClass.jsonToObject(file));
-                                    } catch (BadDataException e) {
-                                        e.printStackTrace(pw);
-                                        logToDebug(sw.toString());
-                                    }
-                                }
-
+                                addToList(file, Collections.singletonList(keywords));
                             }
-
                         }else println("Explain to me: WHY is there a folder, if there's nothing inside it?");
                     }
                 }else println(storypack.getName()+"is empty. Unless I'm missing something...");
             }
         }else println("No storypacks avaliable. Too bad!");
-
     }
 
+    private static void addToList(File file, List<Object> list) {
+        if (file.getAbsolutePath().contains("\\keywords\\")){
+            try {
+                list.add(DataClass.jsonToObject(file));
+            } catch (BadDataException e) {
+                e.printStackTrace(pw);
+                logToDebug(sw.toString());
+            }
+        }
+    }
 
 
     @Marker(id="input")
