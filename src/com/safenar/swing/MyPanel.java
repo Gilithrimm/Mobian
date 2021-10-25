@@ -1,28 +1,37 @@
 package com.safenar.swing;
 
-import com.safenar.Main;
-
 import javax.swing.*;
 import java.awt.*;
 
 import static com.safenar.swing.MyFrame.frameSize;
 
 public class MyPanel extends JPanel {
-    private static final JTextArea PRINT_AREA =new JTextArea();
-    public static Font mono=new Font(Font.MONOSPACED, Font.PLAIN,12);
+    private static final JTextArea INPUT =new JTextArea();
+    private static final JEditorPane OUTPUT=new JEditorPane();
+    public static Font mono=new Font(Font.MONOSPACED, Font.PLAIN,14);
+    private final ColorTheme dark=new ColorTheme(Color.BLACK,Color.DARK_GRAY,Color.WHITE,Color.WHITE);
 
     public MyPanel() {
-        super();
+        super(new BorderLayout());
+//        setBackground(Color.BLACK);
+        setSize(frameSize.getSize());
         display();
+
     }
     private void display(){
-        PRINT_AREA.setBackground(Color.BLACK);
-        PRINT_AREA.setCaretColor(Color.WHITE);
-        PRINT_AREA.setForeground(Color.WHITE);
-        PRINT_AREA.setFont(mono);
-        PRINT_AREA.setSize(frameSize.getSize());
-        Main.println(frameSize.getSize());
-        this.add(PRINT_AREA);
+        JPanel io=new JPanel(new GridLayout(1,2));
+        INPUT.setBackground(dark.getInputBg());
+        INPUT.setCaretColor(dark.getCaret());
+        INPUT.setForeground(dark.getText());
+        INPUT.setFont(mono);
+        io.add(INPUT);
+        OUTPUT.setEditable(false);
+        OUTPUT.setBackground(dark.getOutputBg());
+        OUTPUT.setForeground(dark.getText());
+        OUTPUT.setCaretColor(dark.getCaret());
+        OUTPUT.setFont(mono);
+        io.add(OUTPUT);
+        add(io,BorderLayout.CENTER);
     }
     //KeyListener?
 }
