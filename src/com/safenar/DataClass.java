@@ -15,7 +15,7 @@ public final class DataClass {
         throw new UnsupportedOperationException("instantiating static class. bruh");
     }
 
-    public static Object jsonToObject(File from) throws BadDataException {
+    public static Object jsonToObject(File from) {
         ArrayList<String> strings = fileToList(from);
         fillMapFromList(strings);
         return fillObject(from);// TODO: 05.07.2021 end me, clear me
@@ -47,8 +47,7 @@ public final class DataClass {
         try {
             strings = (ArrayList<String>) Files.readAllLines(from.toPath());
         } catch (IOException ioException) {
-            ioException.printStackTrace(Main.pw);
-            Main.logToDebug(Main.sw.toString());
+            Main.logToDebug(Main.getStackTrace(ioException));
         }
         return strings;
     }

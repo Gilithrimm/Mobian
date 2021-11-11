@@ -14,17 +14,10 @@ import java.util.*;
 
 @SuppressWarnings("CanBeFinal")
 public class Main implements Initializer {
-
     public static final String version="0.01-alpha";
-
-    // TODO: 01.07.2021 Swing
-    @TestMethod
-    public static void println(Object word){
-        System.out.println(word);// TODO: 01.07.2021 turn it into printing through Swing
-        log(debugLog.toPath(), word);
-    }
-
+    private static final Initializer main=new Main();
     static final StringWriter sw = new StringWriter();
+
     static PrintWriter pw = new PrintWriter(sw);//stack trace
     public static File debugLog=new File("logs\\debug.log");
     static File storyDir=new File(System.getProperty("user.home")+"\\storypacks\\");
@@ -33,6 +26,18 @@ public class Main implements Initializer {
     static Scanner commands =new Scanner(System.in);
     static public List<Keyword> keywords=new ArrayList<>();
     public static MyFrame frame;
+
+    private Main() {}
+
+    public static Initializer getMain() {
+        return main;
+    }
+
+    @TestMethod
+    public static void println(Object word){
+        System.out.println(word);
+        log(debugLog.toPath(), word);
+    }
 
     @TestMethod
     public static void logToDebug(Object logs) {
@@ -49,23 +54,16 @@ public class Main implements Initializer {
         }
     }
 
-    @TestMethod
-    public static String arrayToString(Collection<String> collection) {
-        StringBuilder stringBuilder=new StringBuilder();
-        for (String text:collection) {
-            stringBuilder.append(text).append(" ");
-        }
-        return stringBuilder.toString();
+    public static String getStackTrace(Exception e){
+        e.printStackTrace(pw);
+        return sw.toString();
     }
 
-    @TestMethod
-    public static String arrayToString(String[] array){
-        return arrayToString(Arrays.stream(array).toList());
-    }
 
-    // TODO: 20.05.2021 Threads here
+    // TODO: 20.05.2021 Threads
     // TODO: 01.07.2021 unmarshalling data from storypacks
     // TODO: 01.07.2021 *.java files of other packages
+
     @Marker(id = "file iteration")
     public static void iterateFiles(){//should return file I guess?
         if (storypacks != null) {
@@ -88,22 +86,11 @@ public class Main implements Initializer {
 
     private static void addToList(File file, List<Object> list) {
         if (file.getAbsolutePath().contains("\\keywords\\")){
-            try {
-                list.add(DataClass.jsonToObject(file));
-            } catch (BadDataException e) {
-                e.printStackTrace(pw);
-                logToDebug(sw.toString());
-            }
+            list.add(DataClass.jsonToObject(file));
         }
     }
 
 
-    @Marker(id="input")
-    public static ArrayList<String> getInput(){
-        ArrayList<String> stringArrayList=new ArrayList<>();
-        Collections.addAll(stringArrayList,commands.next().split(" "));
-        return stringArrayList;
-    }
 
     @Marker(id="check")
     public static boolean check(Keyword key){
@@ -113,14 +100,33 @@ public class Main implements Initializer {
         return command.equalsIgnoreCase(key.getName());
     }
 
+    @TestMethod
+    public static String arrayToString(String[] array){
+        return arrayToString(Arrays.stream(array).toList());
+    }
+    @TestMethod
+    public static String arrayToString(Collection<String> collection) {
+        StringBuilder stringBuilder=new StringBuilder();
+        for (String text:collection) {
+            stringBuilder.append(text).append(" ");
+        }
+        return stringBuilder.toString();
+    }
+
+    @Marker(id="input")
+    public static ArrayList<String> getInput(){
+        ArrayList<String> stringArrayList=new ArrayList<>();
+        Collections.addAll(stringArrayList,commands.next().split(" "));
+        return stringArrayList;
+    }
+
     @Override
     public void load() {
         if (!storyDir.exists()){
             try {
                 Files.createDirectory(storyDir.toPath());
             } catch (IOException ioException) {
-                ioException.printStackTrace(pw);
-                logToDebug(sw.toString());
+                logToDebug(getStackTrace(ioException));
             }
         }
         frame=new MyFrame();
@@ -133,10 +139,9 @@ public class Main implements Initializer {
             if (check(key)){
                 try {
                     Method method = Class.forName(key.getMethodName().getPackageName()+"."+key.getMethodName().getClassName()).getMethod(key.getMethodName().getMethodName());
-                    method.invoke(null, getInput().toArray());
+                    method.invoke(getInput().toArray());
                 } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-                    e.printStackTrace(pw);
-                    logToDebug(sw.toString());
+                    logToDebug(getStackTrace(e));
                 }// TODO: 20.08.2021 end it.
                 catch (ClassNotFoundException e) {
                     e.printStackTrace();
@@ -147,10 +152,7 @@ public class Main implements Initializer {
 
     @Marker(id="main")
     public static void main(String... args) {
-        Main why=new Main();
-        why.load();
-        why.init();
+        getMain().load();
+        getMain().init();
     }
-
-
 }
