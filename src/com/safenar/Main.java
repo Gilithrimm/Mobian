@@ -1,7 +1,7 @@
 package com.safenar;
 
 import com.safenar.java.Marker;
-import com.safenar.lang.Keyword;
+import com.safenar.core.Keyword;
 
 import java.io.File;
 import java.io.IOException;

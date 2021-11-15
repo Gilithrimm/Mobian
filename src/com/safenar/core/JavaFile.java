@@ -1,4 +1,4 @@
-package com.safenar.lang;
+package com.safenar.core;
 
 import java.util.ArrayList;
 
