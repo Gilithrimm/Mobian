@@ -2,10 +2,13 @@ package com.safenar;
 
 import com.safenar.java.Marker;
 import com.safenar.lang.Keyword;
-import com.safenar.swing.MyFrame;
 
-import java.io.*;
-import java.lang.reflect.*;
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
@@ -25,7 +28,6 @@ public class Main implements Initializer {
     static Random rand=new Random();
     static Scanner commands =new Scanner(System.in);
     static public List<Keyword> keywords=new ArrayList<>();
-    public static MyFrame frame;
 
     private Main() {}
 
@@ -129,7 +131,6 @@ public class Main implements Initializer {
                 logToDebug(getStackTrace(ioException));
             }
         }
-        frame=new MyFrame();
         iterateFiles();
     }
 
