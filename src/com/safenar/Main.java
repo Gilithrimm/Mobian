@@ -1,29 +1,32 @@
 package com.safenar;
 
-import com.safenar.java.Marker;
 import com.safenar.core.Keyword;
+import com.safenar.java.Marker;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.StandardOpenOption;
-import java.time.LocalDateTime;
 import java.util.*;
+
+import static com.safenar.Functional.*;
 
 @SuppressWarnings("CanBeFinal")
 public class Main implements Initializer {
+    /*
+    Some TODOs I made at the beginning of this project. I'm still thinking about sense of them hier.
+    Nonetheless, after I do everything from them, i'l delete them. bruh.
+     TODO: 20.05.2021 Threads
+     TODO: 01.07.2021 unmarshalling data from storypacks
+     TODO: 01.07.2021 *.java files of other packages
+    */
+
     public static final String version="0.01-alpha";
     private static final Initializer main=new Main();
-    static final StringWriter sw = new StringWriter();
+    public static final ArrayList<Initializer> inits=new ArrayList<>();
+    public static final char[] ALPHABET="qwertyuiopasdfghjklzxcvbnm".toUpperCase().toCharArray();
 
-    static PrintWriter pw = new PrintWriter(sw);//stack trace
-    public static File debugLog=new File("logs\\debug.log");
-    static File storyDir=new File(System.getProperty("user.home")+"\\storypacks\\");
     public static File[] storypacks=storyDir.listFiles();
     static Random rand=new Random();
     static Scanner commands =new Scanner(System.in);
@@ -35,91 +38,13 @@ public class Main implements Initializer {
         return main;
     }
 
-    @TestMethod
-    public static void println(Object word){
-        System.out.println(word);
-        log(debugLog.toPath(), word);
-    }
-
-    @TestMethod
-    public static void logToDebug(Object logs) {
-        log(debugLog.toPath(), logs);
-    }
-    @TestMethod
-    public static void log(Path logFile, Object logs){
-        try {
-            byte[] bytes = (LocalDateTime.now()+": "+ logs.toString()+"\n").getBytes();
-            if (!logFile.toFile().exists()) Files.createFile(logFile);
-            Files.write(logFile, bytes, StandardOpenOption.APPEND);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static String getStackTrace(Exception e){
-        e.printStackTrace(pw);
-        return sw.toString();
-    }
-
-
-    // TODO: 20.05.2021 Threads
-    // TODO: 01.07.2021 unmarshalling data from storypacks
-    // TODO: 01.07.2021 *.java files of other packages
-
-    @Marker(id = "file iteration")
-    public static void iterateFiles(){//should return file I guess?
-        if (storypacks != null) {
-            for (File storypack : storypacks) {//iteracja po storypackach
-                File[] dirCheck = storypack.listFiles();//wszystkie foldery grupujące
-                if (dirCheck != null) {
-                    for (File value : dirCheck) {//iteracja po folderach grupujących
-                        File[] files = value.listFiles();
-                        if (files != null) {
-                            for (File file:files) {
-                                if (file.getName().startsWith("_")||!file.isFile()) continue;
-                                addToList(file, Collections.singletonList(keywords));
-                            }
-                        }else println("Explain to me: WHY is there a folder, if there's nothing inside it?");
-                    }
-                }else println(storypack.getName()+"is empty. Unless I'm missing something...");
-            }
-        }else println("No storypacks avaliable. Too bad!");
-    }
-
-    private static void addToList(File file, List<Object> list) {
-        if (file.getAbsolutePath().contains("\\keywords\\")){
-            list.add(DataClass.jsonToObject(file));
-        }
-    }
-
-
-
-    @Marker(id="check")
-    public static boolean check(Keyword key){
-        println("Welcome to Mobian! Write help to get all the commands.");
-        String command=getInput().remove(0);
-        logToDebug(arrayToString(getInput()));
-        return command.equalsIgnoreCase(key.getName());
-    }
-
-    @TestMethod
-    public static String arrayToString(String[] array){
-        return arrayToString(Arrays.stream(array).toList());
-    }
-    @TestMethod
-    public static String arrayToString(Collection<String> collection) {
-        StringBuilder stringBuilder=new StringBuilder();
-        for (String text:collection) {
-            stringBuilder.append(text).append(" ");
-        }
-        return stringBuilder.toString();
-    }
-
-    @Marker(id="input")
-    public static ArrayList<String> getInput(){
-        ArrayList<String> stringArrayList=new ArrayList<>();
-        Collections.addAll(stringArrayList,commands.next().split(" "));
-        return stringArrayList;
+    @Marker(id="main")
+    public static void main(String... args) {
+        debugLog.delete();
+        long start=System.currentTimeMillis();
+        getMain().load();
+        getMain().init();
+        println(System.currentTimeMillis()-start);
     }
 
     @Override
@@ -132,6 +57,32 @@ public class Main implements Initializer {
             }
         }
         iterateFiles();
+    }
+
+    @Marker(id = "file iteration")
+    public static void iterateFiles(){
+        if (storypacks != null) {
+            for (File storypack : storypacks) {//iteracja po storypackach
+                File[] dirCheck = storypack.listFiles();//wszystkie foldery grupujące
+                if (dirCheck != null) {
+                    for (File value : dirCheck) {//iteracja po folderach grupujących
+                        File[] files = value.listFiles();
+                        if (files != null) {
+                            for (File file:files) {
+                                if (file.getName().startsWith("_")||!file.isFile()) continue;
+                                addToList(file, keywords);
+                            }
+                        }else println("Explain to me: WHY is there a folder, if there's nothing inside it?");
+                    }
+                }else println(storypack.getName()+"is empty. Unless I'm missing something...");
+            }
+        }else println("No storypacks avaliable. Too bad!");
+    }
+
+    private static void addToList(File file, List<Keyword> list) {
+        if (file.getAbsolutePath().contains("\\keywords\\")){
+            list.add((Keyword) DataClass.jsonToObject(file));
+        }
     }
 
     @Override
@@ -151,9 +102,32 @@ public class Main implements Initializer {
         }
     }
 
-    @Marker(id="main")
-    public static void main(String... args) {
-        getMain().load();
-        getMain().init();
+    @Marker(id="check")
+    public static boolean check(Keyword key){
+        println("Welcome to Mobian! Write help to get all the commands.");
+        ArrayList<String> list=getInput();
+        String command=list.remove(0);
+        logToDebug(arrayToString(list));
+        return command.equalsIgnoreCase(key.getName());
+    }
+
+    @Marker(id="input")
+    public static ArrayList<String> getInput(){
+        ArrayList<String> stringArrayList=new ArrayList<>();
+        Collections.addAll(stringArrayList,commands.next().split(" "));
+        return stringArrayList;
+    }
+
+    @TestMethod
+    public static String arrayToString(Collection<String> collection) {
+        StringBuilder stringBuilder=new StringBuilder();
+        for (String text:collection) {
+            stringBuilder.append(text).append(" ");
+        }
+        return stringBuilder.toString();
+    }
+    @TestMethod
+    public static String arrayToString(String[] array){
+        return arrayToString(Arrays.stream(array).toList());
     }
 }

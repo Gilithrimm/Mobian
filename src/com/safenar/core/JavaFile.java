@@ -1,5 +1,7 @@
 package com.safenar.core;
 
+import com.safenar.Main;
+
 import java.util.ArrayList;
 
 public class JavaFile {
@@ -13,12 +15,12 @@ public class JavaFile {
         setPackageName(binNameToPackage(split));
     }
 
-    public String binNameToPackage(String[] binName){
+    public String binNameToPackage(String[] binName){//bin=binary
         StringBuilder builder=new StringBuilder();
         StringBuilder classBuilder=new StringBuilder();
         ArrayList<String> list=new ArrayList<>();
         arg:for (String fragment:binName) {
-            for (char first: "qwertyuiopasdfghjklzxcvbnm".toUpperCase().toCharArray()) {//czy zaczyna się wielką literą
+            for (char first: Main.ALPHABET) {//czy zaczyna się wielką literą
                 if (fragment.startsWith(String.valueOf(first))){
                     list.add(fragment);
                 }else if (list.size()!=0){

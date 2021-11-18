@@ -1,12 +1,14 @@
 package com.safenar;
 
-import com.safenar.lang.Keyword;
+import com.safenar.core.Keyword;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import static com.safenar.Functional.*;
 
 public final class DataClass {
     static final HashMap<String, String> map = new HashMap<>();
@@ -18,7 +20,7 @@ public final class DataClass {
     public static Object jsonToObject(File from) {
         ArrayList<String> strings = fileToList(from);
         fillMapFromList(strings);
-        return fillObject(from);// TODO: 05.07.2021 end me, clear me
+        return fillObject(from);
     }
 
     private static void fillMapFromList(ArrayList<String> strings) {
@@ -36,7 +38,8 @@ public final class DataClass {
                     map.put(key, value);
                 }
             }else {
-                //what tf do u expect me to do with "}])" at the end of f..king line?!
+                //what tf do u expect me to do with '}])' at the end of f..king line?!
+                //sb help if you can, give some ideas on fixing this shit
             }
 
         }
@@ -47,7 +50,8 @@ public final class DataClass {
         try {
             strings = (ArrayList<String>) Files.readAllLines(from.toPath());
         } catch (IOException ioException) {
-            Main.logToDebug(Main.getStackTrace(ioException));
+            logToDebug(getStackTrace(ioException));
+            strings.add("It broke.");
         }
         return strings;
     }

@@ -1,2 +1,5 @@
 # Project exclude paths
-#/out/
+/out/
+# f*ck unit tests i still have problems with them
+/test/
+/src/com/safenar/unused
