@@ -1,0 +1,5 @@
+{
+    "name":"go",
+    "desc":"Moves the player into this position",
+    "methodname":"com.safenar.Methods.go()"
+}

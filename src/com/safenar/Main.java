@@ -56,11 +56,12 @@ public class Main implements Initializer {
                 logToDebug(getStackTrace(ioException));
             }
         }
-        iterateFiles();
+        iterateFiles(defStorypacks);
+        iterateFiles(storypacks);
     }
 
     @Marker(id = "file iteration")
-    public static void iterateFiles(){
+    public static void iterateFiles(File[] storypacks){
         if (storypacks != null) {
             for (File storypack : storypacks) {//iteracja po storypackach
                 File[] dirCheck = storypack.listFiles();//wszystkie foldery grupujące

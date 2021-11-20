@@ -1,0 +1,5 @@
+{
+    "name":"help",
+    "desc":"Displays help message",
+    "methodname":"com.safenar.core.Methods.help()"
+}
