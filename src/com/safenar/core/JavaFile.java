@@ -16,24 +16,23 @@ public class JavaFile {
     }
 
     public String binNameToPackage(String[] binName){//bin=binary
-        StringBuilder builder=new StringBuilder();
+        StringBuilder packageBuilder =new StringBuilder();
         StringBuilder classBuilder=new StringBuilder();
-        ArrayList<String> list=new ArrayList<>();
+        ArrayList<String> classes =new ArrayList<>();
+        boolean pain = false;
         arg:for (String fragment:binName) {
-            for (char first: Main.ALPHABET) {//czy zaczyna się wielką literą
-                if (fragment.startsWith(String.valueOf(first))){
-                    list.add(fragment);
-                }else if (list.size()!=0){
-                    for (String content:list) {
-                        classBuilder.append(content);
-                    }
+            for (char first : Main.ALPHABET) {//czy zaczyna się wielką literą
+                if (fragment.startsWith(String.valueOf(first))) {
+                    classes.add(fragment);
+                    pain=true;
+                } else if (classes.size() != 0) {//why elif?
+                    for (String content : classes) classBuilder.append(content);
                     break arg;
                 }
             }
-            builder.append(fragment);
-        }
-        setClassName(classBuilder.toString());
-        return builder.toString();
+            if (!pain) packageBuilder.append(fragment).append(".");//HELP ME its just      pain
+        }setClassName(classBuilder.toString());
+        return packageBuilder.toString();
     }
     public String getMethodName() {
         return methodName;

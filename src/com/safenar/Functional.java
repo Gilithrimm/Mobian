@@ -13,7 +13,8 @@ public final class Functional {
     static final StringWriter sw = new StringWriter();
     static PrintWriter pw = new PrintWriter(sw);//stack trace
     public static File debugLog=new File("logs\\debug.log");
-    static File storyDir=new File(System.getProperty("user.home")+"\\storypacks\\");
+    static File defaultStoryDir=new File("\\storypacks\\");
+    static File storyDir=new File(System.getProperty("user.home"),defaultStoryDir.toString());
 
     @TestMethod
     public static void println(Object word){

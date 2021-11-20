@@ -18,7 +18,7 @@ public class Main implements Initializer {
     Some TODOs I made at the beginning of this project. I'm still thinking about sense of them hier.
     Nonetheless, after I do everything from them, i'l delete them. bruh.
      TODO: 20.05.2021 Threads
-     TODO: 01.07.2021 unmarshalling data from storypacks
+     TODO: 01.07.2021 unmarshalling data from storypacks (nearly done)
      TODO: 01.07.2021 *.java files of other packages
     */
 
@@ -26,7 +26,7 @@ public class Main implements Initializer {
     private static final Initializer main=new Main();
     public static final ArrayList<Initializer> inits=new ArrayList<>();
     public static final char[] ALPHABET="qwertyuiopasdfghjklzxcvbnm".toUpperCase().toCharArray();
-
+    public static File[] defStorypacks=defaultStoryDir.listFiles();
     public static File[] storypacks=storyDir.listFiles();
     static Random rand=new Random();
     static Scanner commands =new Scanner(System.in);
@@ -40,7 +40,7 @@ public class Main implements Initializer {
 
     @Marker(id="main")
     public static void main(String... args) {
-        debugLog.delete();
+        if (!debugLog.delete()) println("Old logs still hier. Just sayin'");
         long start=System.currentTimeMillis();
         getMain().load();
         getMain().init();
@@ -90,7 +90,7 @@ public class Main implements Initializer {
         for (Keyword key : keywords) {
             if (check(key)){
                 try {
-                    Method method = Class.forName(key.getMethodName().getPackageName()+"."+key.getMethodName().getClassName()).getMethod(key.getMethodName().getMethodName());
+                    Method method = Class.forName(key.getMethodName().getPackageName()+key.getMethodName().getClassName()).getMethod(key.getMethodName().getMethodName());
                     method.invoke(getInput().toArray());
                 } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
                     logToDebug(getStackTrace(e));
@@ -103,8 +103,22 @@ public class Main implements Initializer {
     }
 
     @Marker(id="check")
+    /*sth is wrong with calling of this method. it goes like:
+    * -println
+    * -input
+    * -println
+    * -input
+    * -input
+    * -method call
+    * where it should be like:
+    * -println
+    * -input
+    * -method call
+    *
+    * help me pls im dying it kills me i feel just       pain
+    * */
     public static boolean check(Keyword key){
-        println("Welcome to Mobian! Write help to get all the commands.");
+        println("Welcome to Mobian! Write \"help\" or \"\\h\" to get all the commands.");
         ArrayList<String> list=getInput();
         String command=list.remove(0);
         logToDebug(arrayToString(list));
