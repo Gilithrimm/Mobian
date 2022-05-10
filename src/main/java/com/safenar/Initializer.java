@@ -1,4 +1,5 @@
 package com.safenar;
+
 /**
  * This interface is used to decide which classes should have been initialized.
  * */

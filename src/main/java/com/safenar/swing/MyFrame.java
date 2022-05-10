@@ -23,12 +23,14 @@ public class MyFrame extends JFrame {
     }
     private void makeMenuBar(JMenuBar mBar){
         JMenu file=new JMenu("File");
+        JMenuItem[] fileItems=new JMenuItem[4];
 //        file.add("Clear");
-        file.add("Open");
-        file.add("Save");
+        fileItems[0]=file.add("Open");
+        fileItems[1]=file.add("Save");
         file.addSeparator();
-        file.add("Settings");
-        file.add("Exit");
+        fileItems[2]=file.add("Settings");
+        fileItems[3]=file.add("Exit");
+        fileItems[3].addActionListener(e -> System.exit(0));
         mBar.add(file);
         JMenu edit=new JMenu("Edit");
         edit.add("Undo");

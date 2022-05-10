@@ -8,6 +8,7 @@ import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+@Deprecated(since = "0.0.1", forRemoval = true)
 public final class DataClass {
     static final HashMap<String, String> map = new HashMap<>();
 
@@ -22,23 +23,9 @@ public final class DataClass {
     }
 
     private static void fillMapFromList(ArrayList<String> strings) {
-        String s= strings.remove(0);
-        if (!s.contains("{")) strings.add(0,s);
-        s= strings.remove(strings.size()-1);
-        if (!s.contains("}")) strings.add(s);
-        for (String string : strings) {//rozdzielanie linii
-            String replace = string.replaceAll("\"", "");
-            if (replace.contains(":")){
-                String[] lines = replace.split(":");//rozdzielanie na pary klucz-wartość
-                for (int j = 0; j < lines.length; j += 2) {//dodawanie par do mapy
-                    String key = lines[j].trim();
-                    String value = lines[j+1].replace(",","");
-                    map.put(key, value);
-                }
-            }else {
-                //what tf do u expect me to do with "}])" at the end of f..king line?!
-            }
-
+        for (String string : strings) {
+            String[] split = string.split(":");
+            map.put(split[0], split[1]);
         }
     }
 
@@ -47,12 +34,12 @@ public final class DataClass {
         try {
             strings = (ArrayList<String>) Files.readAllLines(from.toPath());
         } catch (IOException ioException) {
-            Main.logToDebug(Main.getStackTrace(ioException));
+            Main.logger.log(Main.logger.getStackTrace(ioException));
         }
         return strings;
     }
 
-    private static Object fillObject(File from) {
+    private static <T> T fillObject(File from) {
         Object object = new Object();
         if (from.toString().contains("\\keywords")){
             object =new Keyword();
@@ -61,6 +48,6 @@ public final class DataClass {
             }
         }
         map.clear();
-        return object;
+        return (T) object;
     }
 }

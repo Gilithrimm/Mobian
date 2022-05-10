@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/keywords.iml" filepath="$PROJECT_DIR$/keywords.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Mobian.iml" filepath="$PROJECT_DIR$/Mobian.iml" />
     </modules>
   </component>
 </project>
