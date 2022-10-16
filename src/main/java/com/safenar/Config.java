@@ -1,5 +1,7 @@
 package com.safenar;
 
-public class Config {
+import java.util.Properties;
 
+public class Config {
+    Properties props;
 }

@@ -19,7 +19,7 @@ public final class DataClass {
     public static Object jsonToObject(File from) {
         ArrayList<String> strings = fileToList(from);
         fillMapFromList(strings);
-        return fillObject(from);// TODO: 05.07.2021 end me, clear me
+        return fillObject(from);
     }
 
     private static void fillMapFromList(ArrayList<String> strings) {
