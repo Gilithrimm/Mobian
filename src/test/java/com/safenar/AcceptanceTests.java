@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.*;
 
 @Disabled
-public class FinalTest {
+public class AcceptanceTests {
 	private static String log;
 	
 	@Disabled
@@ -15,7 +15,7 @@ public class FinalTest {
 	void testApi1(){
 		Keyword hello=KeywordFactory.createFromBuilder()
 				.withName("hello")
-				.withArgument(new Argument("txt"))
+//				.withArgument()
 //				.withCallback(txt->println("Hello, "+txt+"!"))
 				.build();
 		Parser parser=new Parser();

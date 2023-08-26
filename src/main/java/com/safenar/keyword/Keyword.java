@@ -1,15 +1,15 @@
 package com.safenar.keyword;
 
-import com.safenar.*;
+import java.util.function.Consumer;
 
-public class Keyword implements Command {
+public class Keyword implements Consumer<Object[]> {
 	private final String name;
-	private final Command cmd;
-	private Argument[] args;
+	private final Consumer<Object[]> cmd;
+	private final Object[] args;
 	Keyword(String name) {
 		this(name,args -> {});
 	}
-	 Keyword(String name, Command cmd,Argument... args) {
+	Keyword(String name, Consumer<Object[]> cmd,Object... args) {
 		this.name = name;
 		this.cmd = cmd;
 		this.args=args;
@@ -20,7 +20,8 @@ public class Keyword implements Command {
 	}
 	
 	@Override
-	public void execute(Argument... args) {
-		cmd.execute(args);
+	public void accept(Object... args) {
+		cmd.accept(args);
 	}
+
 }

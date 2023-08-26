@@ -21,6 +21,6 @@ class ParserTest {
 		Keyword kw1= KeywordFactory.createKeyword("incr",a->add(1));
 		Parser parser=new Parser();
 //		parser.from(kw1);
-		assertThat(parser);
+		assertThat(parser);//tf?
 	}
 }

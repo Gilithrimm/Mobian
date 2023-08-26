@@ -1,16 +1,14 @@
 package com.safenar.keyword;
 
-import com.safenar.Argument;
-import com.safenar.Command;
-
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
-public class KeywordFactory {
+public class KeywordFactory {//rework?
 	public static Keyword createKeyword(String name) {
 		return new Keyword(name);
 	}
-	public static Keyword createKeyword(String name, Command cmd) {
+	public static Keyword createKeyword(String name, Consumer<Object[]> cmd) {
 		return new Keyword(name,cmd);
 	}
 	public static Builder createFromBuilder() {
@@ -19,8 +17,8 @@ public class KeywordFactory {
 	public static class Builder{
 		private static final Builder BUILDER=new Builder();
 		private String name="";
-		private Command cmd=args->{};
-		private List<Argument> args=new ArrayList<>();
+		private final Consumer<Object[]> cmd=args->{};
+		private final List<Object> args=new ArrayList<>();
 		public Keyword build() {
 			Keyword result= new Keyword(name,cmd);
 //			result.addArguments
@@ -30,7 +28,7 @@ public class KeywordFactory {
 			this.name=name;
 			return this;
 		}
-		public Builder withArgument(Argument arg) {
+		public Builder withArgument(Object arg) {
 			args.add(arg);
 			return this;
 		}

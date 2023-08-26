@@ -15,7 +15,7 @@ class KeywordFactoryTest {
 		int[] counter = {0};//f*cking lambda
 		Keyword kw=KeywordFactory.createKeyword("call",args-> counter[0]++);//hopefully there's workaround
 		assertThat(kw.getName()).isEqualTo("call");
-		kw.execute();//mess with too many errors
+		kw.accept();//mess with too many errors
 		assertThat(counter[0]).isEqualTo(1);
 	}
 	@Test
